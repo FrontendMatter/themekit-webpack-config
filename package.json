@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Laza Bogdan",
   "license": "ISC",
   "dependencies": {
     "extendify": "^1.0.0",
@@ -41,5 +41,18 @@
     "vue-loader": "^7.2.0",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0"
-  }
+  },
+  "main": "base.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/themekit/themekit-webpack-config.git"
+  },
+  "keywords": [
+    "themekit-webpack"
+  ],
+  "bugs": {
+    "url": "https://github.com/themekit/themekit-webpack-config/issues"
+  },
+  "homepage": "https://github.com/themekit/themekit-webpack-config#readme"
 }
