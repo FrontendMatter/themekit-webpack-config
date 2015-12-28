@@ -21,14 +21,14 @@ var config = {
 		fallback: [ path.join(process.cwd(), 'node_modules') ],
 		// add support to require modules without an extension
 		// the empty '' must be included to require modules with an extension
-		extensions: [ '', '.js', '.vue', '.less', '.css' ]
+		extensions: [ '', '.js', '.vue', '.less', '.scss', '.css' ]
 	},
 	resolveLoader: {
 		// fixes issues with linked npm packages
 		fallback: [ path.join(process.cwd(), 'node_modules') ],
 		// add support to require modules without an extension
 		// the empty '' must be included to require modules with an extension
-		extensions: [ '', '.js', '.vue', '.less', '.css' ]
+		extensions: [ '', '.js', '.vue', '.less', '.scss','.css' ]
 	},
 	output: {
 		path: path.join(process.cwd(), configInst.getBuildPath('build')),
@@ -42,7 +42,8 @@ var config = {
 			// ExtractTextPlugin publicPath option overwrites the config.output.publicPath above
 			// this has to be used when config.output.publicPath above is a relative path i.e. "build/"
 			{ test: /\.css$/, loader: ExtractTextPlugin.extract('style', 'css', { publicPath: "" }) },
-			{ test: /\.less$/, loader: ExtractTextPlugin.extract('style', 'css!less!less-import', { publicPath: "" }) },
+			{ test: /\.less$/, loader: ExtractTextPlugin.extract('style', 'css!less!style-import?config=lessImportLoader', { publicPath: "" }) },
+			{ test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css!sass!style-import', { publicPath: "" }) },
 			{ test: /\.html$/, loader: 'html' },
 			{ test: /\.vue$/, loader: 'vue' },
 
@@ -93,7 +94,8 @@ var config = {
 	vue: {
 		loaders: {
 			css: 'style!css',
-			less: 'style!css!less!less-import',
+			less: 'style!css!less!style-import?config=lessImportLoader',
+			sass: 'style!css!sass!style-import',
 			// important!
 			// use vue-html-loader instead of html-loader
 			// with .vue files
@@ -121,9 +123,9 @@ var config = {
 	eslint: {
 		configFile: path.resolve(__dirname, '.eslintrc')
 	},
-	// inject ./src/less/common.less at the beginning of required .less files
-	lessImportLoader: {
-		base: path.resolve(process.cwd(), configInst.getSrcPath('less', 'common.less'))
+	// inject ./src/sass/_common.scss at the beginning of imported .scss files
+	styleImportLoader: {
+		base: path.resolve(process.cwd(), configInst.getSrcPath('sass', '_common.scss'))
 	},
 	plugins: [
 		// make a module available in every module
