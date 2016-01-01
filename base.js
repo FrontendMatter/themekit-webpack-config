@@ -12,6 +12,12 @@ function resolveLink(path) {
 	return resolve.sync(path, { basedir: process.cwd() });
 }
 
+var options = {
+	ExtractTextPlugin: {
+		publicPath: ""
+	}
+}
+
 var config = {
 	entry: {},
 	resolve: {
@@ -38,12 +44,18 @@ var config = {
 		filename: "[name].js"
 	},
 	module: {
+		noParse: [
+			// temporary fix for highlight.js + webpack issue
+			// https://github.com/isagalaev/highlight.js/issues/895#issuecomment-149223858
+			// also see https://github.com/webpack/webpack/issues/1721
+			/autoit.js/
+		],
 		loaders: [
 			// ExtractTextPlugin publicPath option overwrites the config.output.publicPath above
 			// this has to be used when config.output.publicPath above is a relative path i.e. "build/"
-			{ test: /\.css$/, loader: ExtractTextPlugin.extract('style', 'css', { publicPath: "" }) },
-			{ test: /\.less$/, loader: ExtractTextPlugin.extract('style', 'css!less!style-import?config=lessImportLoader', { publicPath: "" }) },
-			{ test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css!sass!style-import', { publicPath: "" }) },
+			{ test: /\.css$/, loader: ExtractTextPlugin.extract('style', 'css', options.ExtractTextPlugin) },
+			{ test: /\.less$/, loader: ExtractTextPlugin.extract('style', 'css!less!style-import?config=lessImportLoader', options.ExtractTextPlugin) },
+			{ test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css!sass!style-import', options.ExtractTextPlugin) },
 			{ test: /\.html$/, loader: 'html' },
 			{ test: /\.vue$/, loader: 'vue' },
 
@@ -86,16 +98,16 @@ var config = {
 					// files in ./src
 					path.resolve(process.cwd(), configInst.getSrcPath()),
 					// files from the themekit-vue package
-					/themekit\-vue/
+					/themekit\-vue\/src\/vue/
 				]
 			}
 		]
 	},
 	vue: {
 		loaders: {
-			css: 'style!css',
-			less: 'style!css!less!style-import?config=lessImportLoader',
-			sass: 'style!css!sass!style-import',
+			css: ExtractTextPlugin.extract('style', 'css', options.ExtractTextPlugin),
+			less: ExtractTextPlugin.extract('style', 'css!less!style-import?config=lessImportLoader', options.ExtractTextPlugin),
+			sass: ExtractTextPlugin.extract('style', 'css!sass!style-import', options.ExtractTextPlugin),
 			// important!
 			// use vue-html-loader instead of html-loader
 			// with .vue files
