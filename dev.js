@@ -1,6 +1,5 @@
-var requireLink  = require('require-linked-peer');
-var Config = requireLink('themekit-pipeline').config;
-var configInst = new Config();
+var requireLink  = require('require-linked-peer')
+var base = require('./base')
 module.exports = {
 	devtool:  "eval",
 	output: {
@@ -8,7 +7,7 @@ module.exports = {
 	},
 	debug: true,
 	devServer:  {
-    	contentBase: './' + configInst.getBuildPath(),
+    	contentBase: './' + base.options.distPath,
     	hot: true
     }
 }
