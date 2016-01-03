@@ -27,17 +27,22 @@ function base () {
 		srcPath: 'src',
 		outputPath: 'build',
 		publicPath: true,
+		// load modules from bower_components
 		bower_components: true,
+		// enable plugins
 		plugins: {
 			ExtractTextPlugin: true,
-			CommonsChunkPlugin: true
+			CommonsChunkPlugin: true,
+			ProvidePlugin: false
 		},
+		// plugin options
 		plugin: {
 			ExtractTextPlugin: {
 				publicPath: ''
 			},
 			ProvidePlugin: {}
 		},
+		// loader options
 		loader: {
 			babel: {
 				include: [],
@@ -45,7 +50,11 @@ function base () {
 			}
 		}
 	}
+
+	// load user options
 	this.loadOptions()
+
+	// base config
 	this.config = {
 		entry: {},
 		resolve: {
@@ -114,7 +123,7 @@ function base () {
 					test: /\.js$/,
 					loader: 'babel!eslint',
 					// use 'include' when possible
-					// otherwise exclude files in node_modules and bower_components
+					// otherwise you should probably exclude files in node_modules and bower_components
 					// exclude: /node_modules|bower_components/,
 					exclude: this.options.loader.babel.exclude,
 					include: [
@@ -123,7 +132,8 @@ function base () {
 					].concat(this.options.loader.babel.include)
 				},
 
-				{ test: resolveLink('jquery'), loader: 'expose?$!expose?jQuery' },
+				// expose global jQuery
+				{ test: /jquery\/dist\/jquery\.js$/, loader: 'expose?$!expose?jQuery' },
 			]
 		},
 		vue: {
@@ -162,14 +172,11 @@ function base () {
 		styleImportLoader: {
 			base: this.srcPath('sass', '_common.scss')
 		},
-		plugins: [
-			// make a module available in every module
-			// the module is required only if the variable is actually used
-			new webpack.ProvidePlugin(this.options.plugin.ProvidePlugin)
-		]
+		plugins: []
 	}
 }
 
+// resolve a path within base.options.srcPath
 base.prototype.srcPath = function () {
 	var paths = Array.prototype.slice.call(arguments, 0)
 	paths.unshift(this.options.srcPath)
@@ -245,10 +252,17 @@ base.prototype.getConfig = function () {
 			}
 		}, this)
 	}
+	// make a module available in every module
+	// the module is required only if the variable is actually used
+	if (this.options.plugins.ProvidePlugin) {
+		this.config.plugins.push(
+			new webpack.ProvidePlugin(this.options.plugin.ProvidePlugin)
+		)
+	}
 	return this.config
 }
 
-// utility to remove plugin from config
+// utility to remove a plugin from config
 // i.e. plugin === webpack.optimize.CommonsChunkPlugin
 base.prototype.removePlugin = function (plugin) {
 	this.config.plugins = this.config.plugins.filter(function (p) {
@@ -256,6 +270,7 @@ base.prototype.removePlugin = function (plugin) {
 	})
 }
 
+// find a loader object by it's test key 
 // i.e. test === /\.js$/
 base.prototype.getLoader = function (test) {
 	var loaders = this.config.module.loaders.map(function(loader, index) {
@@ -264,10 +279,10 @@ base.prototype.getLoader = function (test) {
 			index: index
 		}
 	})
-	var loader = loaders.filter(function (loader) {
+	.filter(function (loader) {
 		return String(loader.loader.test) === String(test)
 	})
-	return loader.length ? loader[0] : false
+	return loaders.length ? loaders[0] : false
 }
 
 // utility to remove a loader from config
@@ -279,4 +294,4 @@ base.prototype.removeLoader = function (test) {
 	}
 }
 
-module.exports = new base()
+module.exports = base

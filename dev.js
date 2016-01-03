@@ -1,5 +1,6 @@
 var requireLink  = require('require-linked-peer')
-var base = require('./base')
+var Base = require('./base')
+var config = new Base()
 module.exports = {
 	devtool:  "eval",
 	output: {
@@ -7,7 +8,7 @@ module.exports = {
 	},
 	debug: true,
 	devServer:  {
-    	contentBase: './' + base.options.distPath,
+    	contentBase: './' + config.options.distPath,
     	hot: true
     }
 }
