@@ -117,6 +117,10 @@ function base () {
 				// see https://github.com/webpack/webpack/issues/512
 				{ test: /modernizr/, loader: "imports?this=>window!exports?window.Modernizr" },
 
+				// Morris.js dependencies
+				{ test: /raphael/, loader: "imports?fix=>module.exports=0!exports?window.Raphael" },
+				{ test: /eve\.js$/, loader: "exports?window.eve" },
+
 				// use babel-loader for *.js files
 				// with ESLint
 				{
