@@ -2,7 +2,7 @@ var requireLink  = require('require-linked-peer')
 var Base = require('./base')
 var config = new Base()
 module.exports = {
-	devtool:  "cheap-source-map",
+	devtool:  'cheap-source-map',
 	output: {
 		pathInfo: true
 	},
