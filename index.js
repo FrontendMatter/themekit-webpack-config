@@ -35,11 +35,11 @@ function ThemeKitWebpackConfig () {
 	]
 
 	extensions.forEach((e) => {
-		this.register(e, require('webpack-config-api-' + e))
+		this.register(e, require('webpack-config-api/extensions/' + e))
 	})
 
 	this.register('vendor', require('./extensions/vendor'))
-		.register('vue', require('webpack-config-api-vue'), {
+		.register('vue', require('webpack-config-api/extensions/vue'), {
 			loaders: {
 				sass: 'style!css!sass!style-import?config=sassImportLoader'
 			}
