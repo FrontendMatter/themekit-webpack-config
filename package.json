@@ -8,15 +8,7 @@
   "author": "Laza Bogdan",
   "license": "ISC",
   "dependencies": {
-    "webpack-config-api": "^0.1.0",
-    "webpack-config-api-babel": "^1.0.0",
-    "webpack-config-api-bower": "^1.0.0",
-    "webpack-config-api-commons": "^1.0.0",
-    "webpack-config-api-eslint": "^1.0.0",
-    "webpack-config-api-extract": "^1.0.0",
-    "webpack-config-api-fonts": "^1.0.0",
-    "webpack-config-api-images": "^1.0.0",
-    "webpack-config-api-vue": "^1.0.0"
+    "webpack-config-api": "^0.1.0"
   },
   "peerDependencies": {
     "babel-core": "^6.4.0",
