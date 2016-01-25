@@ -1,9 +1,5 @@
 module.exports = function () {
 	return this.addLoaders([
-		// hack to be able to require isotope-layout via webpack
-		// see http://isotope.metafizzy.co/appendix.html#webpack
-		{ test: /isotope\-|fizzy\-ui\-utils|desandro\-|masonry|packery|outlayer|get\-size|doc\-ready|eventie|eventemitter/, loader: 'imports?define=>false&this=>window' },
-
 		// hack to be able to require Modernizr v2.8.3
 		// see https://github.com/webpack/webpack/issues/512
 		{ test: /modernizr/, loader: "imports?this=>window!exports?window.Modernizr" },
