@@ -34,16 +34,21 @@ function ThemeKitWebpackConfig () {
 		'images'
 	]
 
-	extensions.forEach((e) => {
-		this.register(e, require('webpack-config-api/extensions/' + e))
-	})
-
-	this.register('vendor', require('./extensions/vendor'))
-		.register('vue', require('webpack-config-api/extensions/vue'), {
-			loaders: {
-				sass: 'style!css!sass!style-import?config=sassImportLoader'
-			}
+	try {
+		extensions.forEach((e) => {
+			this.register(e, require('webpack-config-api/extensions/' + e))
 		})
+
+		this.register('vendor', require('./extensions/vendor'))
+			.register('vue', require('webpack-config-api/extensions/vue'), {
+				loaders: {
+					sass: 'style!css!sass!style-import?config=sassImportLoader'
+				}
+			})
+	}
+	catch (e) {
+		console.warn('themekit-webpack-config: ' + e.message, e.stack)
+	}
 
 	this.use('babel')
 		.use('eslint')
