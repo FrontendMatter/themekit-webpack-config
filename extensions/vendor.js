@@ -9,7 +9,8 @@ module.exports = function () {
 		{ test: /eve\.js$/, loader: "exports?window.eve" },
 
 		// expose global jQuery
-		{ test: /jquery\/dist\/jquery\.js$/, loader: 'expose?$!expose?jQuery' }
+		{ test: /jquery\/dist\/jquery\.js$/, loader: 'expose?$!expose?jQuery' },
+		{ test: /tether\/dist\/js\/tether\.js$/, loader: 'expose?Tether' }
 	])
 	.webpack({
 		module: {
