@@ -2,6 +2,9 @@ var util = require('util')
 var path = require('path')
 var WebpackConfig = require('webpack-config-api')
 
+var requireLink  = require('require-linked-peer')
+var autoprefixer = requireLink('autoprefixer')({ browsers: ['last 2 versions'] })
+
 function ThemeKitWebpackConfig () {
 
 	// super
@@ -9,11 +12,14 @@ function ThemeKitWebpackConfig () {
 
 	this.addFileExtensions('js', 'scss', 'css')
 		.addLoaders([
-			{ test: /\.css$/, loader: 'style!css' },
-			{ test: /\.scss$/, loader: 'style!css!sass!style-import?config=sassImportLoader' },
+			{ test: /\.css$/, loader: 'style!css!postcss' },
+			{ test: /\.scss$/, loader: 'style!css!postcss!sass!style-import?config=sassImportLoader' },
 			{ test: /\.html$/, loader: 'html' }
 		])
 		.webpack({
+			postcss: function () {
+				return [autoprefixer]
+			},
 			// inject ./src/sass/_common.scss at the beginning of imported .scss files
 			sassImportLoader: {
 				base: this.srcPath('sass', '_common.scss')
